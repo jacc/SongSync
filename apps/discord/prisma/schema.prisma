@@ -1,0 +1,13 @@
+datasource db {
+    provider = "mysql"
+    url      = env("DATABASE_URL")
+}
+
+generator kysely {
+    provider = "prisma-kysely"
+    fileName = "types.ts"
+}
+
+model User {
+    id Int @id @default(autoincrement())
+}
