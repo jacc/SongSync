@@ -1,0 +1,14 @@
+{
+  "name": "@streamticker/cache",
+  "packageManager": "pnpm@7.15.0",
+  "type": "module",
+  "exports": "./dist/index.cjs",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --dts"
+  },
+  "devDependencies": {
+    "tsup": "^6.7.0",
+    "typescript": "^5.0.4"
+  }
+}
