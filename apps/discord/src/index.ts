@@ -7,7 +7,10 @@ import {
 } from "discord.js";
 import { chatCommandsMap } from "./commands";
 import { log } from "./lib/logger/log";
-import { handleInteraction } from "./interactions";
+import { handleInteraction, handleMessageInteraction } from "./interactions";
+import { handleChatMessage } from "./interactions/message";
+import { env } from "./env";
+import { countSongs } from "./lib/redis/redis";
 
 const client = new Client({
   intents: [
@@ -18,25 +21,34 @@ const client = new Client({
 });
 
 const restClient = new REST({ version: "10" }).setToken(
-  process.env.DISCORD_TOKEN as string
+  env.DISCORD_TOKEN as string
 );
 
 client.on("ready", async () => {
+  const songs = await countSongs();
+
   await client.user?.setPresence({
     activities: [
       {
-        name: "with your mom",
+        name: `with ${songs} songs`,
         type: ActivityType.Playing,
       },
     ],
     status: "online",
   });
 
+  log.success(`Logged in as ${client.user!.tag}!`);
+});
+
+client.on("interactionCreate", handleInteraction);
+client.on("messageCreate", handleChatMessage);
+
+void client.login(env.DISCORD_TOKEN as string).then(async () => {
   try {
     const commandsRegistered = (await restClient.put(
       Routes.applicationGuildCommands(
-        process.env.DISCORD_APPLICATION_ID as string,
-        process.env.DISCORD_GUILD_ID as string
+        env.DISCORD_APPLICATION_ID as string,
+        env.DISCORD_GUILD_ID as string
       ),
       { body: [...chatCommandsMap.values()] }
     )) as Array<unknown>;
@@ -46,10 +58,4 @@ client.on("ready", async () => {
   } catch (error) {
     log.fatal(error);
   }
-
-  log.success(`Logged in as ${client.user!.tag}!`);
 });
-
-client.on("interactionCreate", handleInteraction);
-
-void client.login(process.env.DISCORD_TOKEN as string);

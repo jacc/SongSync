@@ -11,3 +11,14 @@ generator kysely {
 model User {
     id Int @id @default(autoincrement())
 }
+
+model Guild {
+    id      String  @id
+    enabled Boolean @default(true)
+    format  Format  @default(DEFAULT)
+}
+
+enum Format {
+    DEFAULT
+    MINIMAL
+}

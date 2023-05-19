@@ -1,10 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
-import type {
-  ChatCommand,
-  MessageCommand,
-  UserCommand,
-} from "../types/command";
 
+import { ChatCommand, MessageCommand, UserCommand } from "../../types/command";
 import { ping } from "./util/ping";
 
 export const chatCommands: ChatCommand[] = [ping];

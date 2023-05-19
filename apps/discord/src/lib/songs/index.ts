@@ -7,7 +7,7 @@ import { LinkResponse, OdlesiResponse } from "../../../types/odlesi";
 const THIRTY_DAYS_IN_SECONDS = 60 * 60 * 24 * 30;
 
 export default async function getSongs(link: string): Promise<LinkResponse> {
-  await wrapRedis(
+  return await wrapRedis(
     `song:${link}`,
     async () => {
       const request = await axios.get<OdlesiResponse>(
