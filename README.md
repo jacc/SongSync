@@ -1,6 +1,6 @@
 # SongSync
 
-### The successor to the now deceased tunes.ninja
+#### The successor to the now deceased tunes.ninja
 
 ## Structure
 

@@ -5,8 +5,8 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export type User = {
-    id: Generated<number>;
+  id: Generated<number>;
 };
 export type DB = {
-    User: User;
+  User: User;
 };
