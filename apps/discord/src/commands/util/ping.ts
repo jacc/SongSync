@@ -1,7 +1,7 @@
-import type { ChatCommand } from "../../types/command";
 import type { CommandInteraction } from "discord.js";
 import { ApplicationCommandType } from "discord.js";
 import { wrapRedis } from "../../lib/redis";
+import { ChatCommand } from "../../../types/command";
 
 export const ping: ChatCommand = {
   name: "ping",
