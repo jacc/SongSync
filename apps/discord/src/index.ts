@@ -8,7 +8,6 @@ import {
 import { chatCommandsMap } from "./commands";
 import { log } from "./lib/logger/log";
 import { handleInteraction } from "./interactions";
-require("dotenv").config();
 
 const client = new Client({
   intents: [

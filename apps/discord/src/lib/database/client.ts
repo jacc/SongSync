@@ -1,12 +1,13 @@
 import { Kysely } from "kysely";
 import { PlanetScaleDialect } from "kysely-planetscale";
-import { DB } from "../../prisma/generated/types";
+import { DB } from "../../../prisma/generated/types";
+import { env } from "../../env";
 
 const database = new Kysely<DB>({
   dialect: new PlanetScaleDialect({
-    host: process.env.DATABASE_HOST,
-    username: process.env.DATABASE_USERNAME,
-    password: process.env.DATABASE_PASSWORD,
+    host: env.DATABASE_HOST,
+    username: env.DATABASE_USERNAME,
+    password: env.DATABASE_PASSWORD,
     useSharedConnection: true,
   }),
 });
