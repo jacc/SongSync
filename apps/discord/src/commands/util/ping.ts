@@ -9,15 +9,6 @@ export const ping: ChatCommand = {
   type: ApplicationCommandType.ChatInput,
   inhibitors: [],
   async run(interaction: CommandInteraction) {
-    await wrapRedis(`user:${interaction.user.id}`, async () => {
-      return {
-        id: interaction.user.id,
-        username: interaction.user.username,
-        discriminator: interaction.user.discriminator,
-        avatar: interaction.user.avatar,
-        bot: interaction.user.bot,
-      };
-    });
     await interaction.reply({ content: "Pong! hoe 2", ephemeral: true });
   },
 };
