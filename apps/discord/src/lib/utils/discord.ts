@@ -28,14 +28,14 @@ export async function formatEmbed(
     }
   }
 
-  //   if (guildSettings.format === Format.DEFAULT) {
-  //     const embed = new EmbedBuilder()
-  //       .setTitle(`${song.title} - ${song.artist}`)
-  //       .setThumbnail(song.thumbnail)
-  //       .setTimestamp();
+  if (guildSettings.format === Format.DEFAULT) {
+    const embed = new EmbedBuilder()
+      .setTitle(`${song.title} - ${song.artist}`)
+      .setThumbnail(song.thumbnail)
+      .setTimestamp();
 
-  //     return embed, songButtons;
-  //   }
+    return { embed, songButtons };
+  }
 
-  return songButtons;
+  return { embed: null, songButtons };
 }

@@ -54,19 +54,9 @@ export async function handleChatMessage(message: Message): Promise<void> {
   matches.map(async (match) => {
     const matchLinks = await getSongs(match);
     const replyObject = await formatEmbed(matchLinks, guildSettings);
-    console.log(replyObject);
-
-    const row = new ActionRowBuilder().addComponents(
-      new ButtonBuilder()
-        .setStyle(ButtonStyle.Link)
-        .setURL(
-          "https://open.spotify.com/track/6tEpOijHrGLidCtHeoMhlC?si=61c9f214d4894ba2"
-        )
-        .setEmoji("🎵")
-    );
-
-    console.log(replyObject);
-
-    await message.reply({ components: [replyObject] });
+    await message.reply({
+      components: [replyObject.songButtons],
+      embeds: replyObject.embed ? [replyObject.embed] : undefined,
+    });
   });
 }
