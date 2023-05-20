@@ -10,6 +10,8 @@ import {
 import { LinkResponse } from "../../../types/odlesi";
 import { Format, Guild } from "@prisma/client";
 import { AnyComponentBuilder } from "discord.js";
+import { getAverageColor } from "fast-average-color-node";
+import { PlatformEmoji } from "../../../types/bot";
 
 export async function formatEmbed(
   song: LinkResponse,
@@ -17,6 +19,7 @@ export async function formatEmbed(
 ): Promise<{
   embed: EmbedBuilder | null;
   songButtons: ActionRowBuilder<AnyComponentBuilder>;
+  actionButtons: ActionRowBuilder<AnyComponentBuilder>;
 }> {
   const songButtons = new ActionRowBuilder();
 
@@ -25,21 +28,43 @@ export async function formatEmbed(
       songButtons.addComponents(
         new ButtonBuilder()
           .setStyle(ButtonStyle.Link)
-          .setLabel(key)
           .setURL(value)
-          .setEmoji("🎵")
+          .setEmoji(PlatformEmoji[key])
       );
     }
   }
 
-  if (guildSettings.format === Format.DEFAULT) {
-    const embed = new EmbedBuilder()
-      .setTitle(`${song.title} - ${song.artist}`)
-      .setThumbnail(song.thumbnail)
-      .setTimestamp();
+  const actionButtons = new ActionRowBuilder().addComponents([
+    new ButtonBuilder()
+      .setStyle(ButtonStyle.Secondary)
+      .setCustomId("play")
+      .setLabel("Play Now")
+      .setEmoji("▶️"),
+    new ButtonBuilder()
+      .setStyle(ButtonStyle.Secondary)
+      .setCustomId("queue")
+      .setLabel("Add to Queue")
+      .setEmoji("📃"),
+    new ButtonBuilder()
+      .setStyle(ButtonStyle.Secondary)
+      .setCustomId("add")
+      .setLabel("Add to Playlist")
+      .setEmoji("➕"),
+  ]);
 
-    return { embed, songButtons };
+  if (guildSettings.format === Format.DEFAULT) {
+    // const color = await getAverageColor(song.thumbnail, {
+    //   algorithm: "simple",
+    // });
+    // console.log(color);
+    const embed = new EmbedBuilder().setAuthor({
+      name: `${song.title} by ${song.artist}`,
+      iconURL: song.thumbnail,
+    });
+    // .setColor(`${color.hex}`);
+
+    return { embed, songButtons, actionButtons };
   }
 
-  return { embed: null, songButtons };
+  return { embed: null, songButtons, actionButtons };
 }

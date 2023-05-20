@@ -14,6 +14,7 @@
     "@streamticker/cache": "workspace:*",
     "axios": "^1.4.0",
     "discord.js": "^14.11.0",
+    "fast-average-color-node": "^2.6.0",
     "ioredis": "^5.3.2",
     "signale": "^1.4.0",
     "urlcat": "^3.1.0",

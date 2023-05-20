@@ -9,6 +9,8 @@ import getSongs from "../lib/songs";
 import { prisma } from "../lib/database/client";
 import { wrapRedis } from "../lib/redis";
 import { formatEmbed } from "../lib/utils/discord";
+import { getCachedSettings } from "../lib/database/util";
+import getSongsUncached from "../lib/songs";
 
 const linkSchema = z.string().refine((x) => {
   return (
@@ -29,31 +31,18 @@ export async function handleChatMessage(message: Message): Promise<void> {
   const matches = url.data.match(/\bhttps?:\/\/\S+/gi);
   if (!matches) return;
 
-  let guildSettings = await wrapRedis(
-    `settings:${message.guild.id}`,
-    async () => {
-      try {
-        return await prisma.guild.findFirstOrThrow({
-          where: { id: message.guild!.id },
-        });
-      } catch (e) {
-        return await prisma.guild.create({
-          data: {
-            id: message.guild!.id,
-          },
-        });
-      }
-    },
-    6000
-  );
+  const guildSettings = await getCachedSettings(message.guild.id);
 
   if (!guildSettings.enabled) return;
 
   matches.map(async (match) => {
-    const matchLinks = await getSongs(match);
+    const matchLinks = await getSongsUncached(match);
     const replyObject = await formatEmbed(matchLinks, guildSettings);
     await message.reply({
-      components: [replyObject.songButtons as ActionRowBuilder<ButtonBuilder>],
+      components: [
+        replyObject.songButtons as ActionRowBuilder<ButtonBuilder>,
+        replyObject.actionButtons as ActionRowBuilder<ButtonBuilder>,
+      ],
       embeds: replyObject.embed ? [replyObject.embed] : undefined,
     });
   });
