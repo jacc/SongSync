@@ -47,15 +47,13 @@ export async function handleChatMessage(message: Message): Promise<void> {
     6000
   );
 
-  console.log(guildSettings);
-
   if (!guildSettings.enabled) return;
 
   matches.map(async (match) => {
     const matchLinks = await getSongs(match);
     const replyObject = await formatEmbed(matchLinks, guildSettings);
     await message.reply({
-      components: [replyObject.songButtons],
+      components: [replyObject.songButtons as ActionRowBuilder<ButtonBuilder>],
       embeds: replyObject.embed ? [replyObject.embed] : undefined,
     });
   });
