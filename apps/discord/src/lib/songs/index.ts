@@ -28,7 +28,6 @@ export default async function getSongs(link: string): Promise<LinkResponse> {
           soundcloud: json.linksByPlatform.soundcloud.url,
           spotify: json.linksByPlatform.spotify.url,
           tidal: json.linksByPlatform.tidal.url,
-          youtube: json.linksByPlatform.youtube.url,
           youtube_music: json.linksByPlatform.youtubeMusic.url,
         },
       } as LinkResponse;
