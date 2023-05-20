@@ -3,9 +3,8 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-generator kysely {
-    provider = "prisma-kysely"
-    fileName = "types.ts"
+generator client {
+    provider = "prisma-client-js"
 }
 
 model User {
